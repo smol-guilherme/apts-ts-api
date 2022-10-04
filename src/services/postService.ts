@@ -13,13 +13,7 @@ import {
 } from "../types/dataTypes";
 
 export async function insertRoutine(postData: IPostBody, userId: string) {
-  const findUser = await findById(userId);
-  if (findUser === null) {
-    throw {
-      type: "not_found_error",
-      message: "User does not exist or id is in the wrong format.",
-    };
-  }
+  const findUser = await findUserByUUID(userId);
   let locationFound = await findByCoordinates(postData.location);
   if (locationFound === null) {
     locationFound = await createNewLocation({
@@ -40,12 +34,41 @@ export async function insertRoutine(postData: IPostBody, userId: string) {
   await posts.insert(insertData);
 }
 
-export async function getPostsRoutine() {
-  return await posts.findAll();
+export async function getPostsRoutine(userId: string) {
+  return await posts.findAll(userId);
+}
+
+export async function starPostRoutine(postId: string, userId: string) {
+  await findUserByUUID(userId);
+  await posts.findByUUID(postId);
+  await posts.upvote(postId, userId);
+  return;
 }
 
 async function createNewLocation(data: TPlacesInsert) {
   return await createLocation(data);
+}
+
+async function findUserByUUID(uid: string) {
+  const query = await findById(uid);
+  if (query === null) {
+    throw {
+      type: "not_found_error",
+      message: "User does not exist or id is in the wrong format.",
+    };
+  }
+  return query;
+}
+
+async function findPostByUUID(pid: string) {
+  const query = await posts.findByUUID(pid);
+  if (query === null) {
+    throw {
+      type: "not_found_error",
+      message: "Post does not exist or id is in the wrong format.",
+    };
+  }
+  return query;
 }
 
 function handleEstablishmentTypeConversion(type: string): EstType {

@@ -54,6 +54,7 @@ model Stars {
   post      Posts    @relation(fields: [postId], references: [id])
   postId    String
 
+  @@unique([userId, postId])
   @@map("stars")
 }
 

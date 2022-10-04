@@ -31,6 +31,8 @@ export interface IPostsResponse {
   description: string;
   author: IAuthorData;
   location: ILocationData;
+  stars: number;
+  likedBy: string[];
 }
 
 interface IAuthorData {

@@ -2,7 +2,14 @@ import { Posts } from "@prisma/client";
 import { prisma } from "../database/database";
 import { IPostsResponse, TPostsInsert } from "../types/dataTypes";
 
-export async function findAll(filter?: string): Promise<IPostsResponse[]> {
+export async function findByUUID(postId: string) {
+  return await prisma.posts.findFirst({ where: { id: postId } });
+}
+
+export async function findAll(
+  userId: string,
+  filter?: string
+): Promise<IPostsResponse[]> {
   const response = await prisma.posts.findMany({
     where: {},
     include: {
@@ -17,6 +24,16 @@ export async function findAll(filter?: string): Promise<IPostsResponse[]> {
           type: true,
           latitude: true,
           longitude: true,
+        },
+      },
+      _count: {
+        select: {
+          stars: true,
+        },
+      },
+      stars: {
+        select: {
+          userId: true,
         },
       },
     },
@@ -35,6 +52,8 @@ export async function findAll(filter?: string): Promise<IPostsResponse[]> {
         authorId: item.authorId,
         ...item.author,
       },
+      stars: item._count.stars,
+      likedBy: item.stars.map((uid) => uid.userId),
     };
   });
 
@@ -43,4 +62,9 @@ export async function findAll(filter?: string): Promise<IPostsResponse[]> {
 
 export async function insert(data: TPostsInsert): Promise<Posts> {
   return await prisma.posts.create({ data });
+}
+
+export async function upvote(pid: string, uid: string) {
+  const data = { postId: pid, userId: uid };
+  return await prisma.stars.create({ data });
 }

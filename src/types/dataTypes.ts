@@ -11,11 +11,17 @@ export interface IRegistryBody {
 }
 
 export type TPostsInsert = Omit<models.Posts, "id" | "createdAt" | "updatedAt">;
+export type TPlacesInsert = Omit<
+  models.Places,
+  "id" | "createdAt" | "updatedAt"
+>;
 
 export interface IPostBody {
-  postName: string;
-  pictureUrl: string;
-  price: number;
+  title: string;
+  description: string;
+  location: number[];
+  locationName: string;
+  establishmentType: string;
 }
 
 export interface IError extends Error {
@@ -33,3 +39,11 @@ export interface IJoiError {
 export interface Hashtable<T> {
   [key: string]: T;
 }
+
+export const EstType: { [x: string]: "RESTAURANT" | "BAR" | "COFFEESHOP" } = {
+  RESTAURANT: "RESTAURANT",
+  BAR: "BAR",
+  COFFEESHOP: "COFFEESHOP",
+};
+
+export type EstType = typeof EstType[keyof typeof EstType];

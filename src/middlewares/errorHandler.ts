@@ -19,6 +19,8 @@ export function handleError(
   }
   if (error.type === "empty_request")
     return res.status(400).send({ message: error.message });
+  if (error.type === "wrong_format_error")
+    return res.status(400).send({ message: error.message });
   if (error.type === "not_found_error")
     return res.status(404).send({ message: error.message });
   if (error.type === "no_schema_error")

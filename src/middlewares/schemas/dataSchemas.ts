@@ -20,6 +20,10 @@ export const signinSchema = Joi.object({
 export const postSchema = Joi.object({
   title: Joi.string().trim().required(),
   description: Joi.string().trim().required(),
-  // locationId: Joi.string().trim().uuid().required(),
   location: Joi.array().length(2).required(),
+  locationName: Joi.string().trim().required(),
+  establishmentType: Joi.string()
+    .trim()
+    .valid("Restaurant", "Bar", "Coffee Shop")
+    .required(),
 });

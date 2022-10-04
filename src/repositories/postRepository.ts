@@ -1,21 +1,11 @@
+import { Posts } from "@prisma/client";
 import { prisma } from "../database/database";
 import { TPostsInsert } from "../types/dataTypes";
 
-export async function findAll() {
-  return await prisma.posts.findMany({
-    where: {},
-    include: {
-      User: {
-        select: {
-          id: true,
-          userName: true,
-          profilePicture: true,
-        },
-      },
-    },
-  });
+export async function findAll(filter?: string): Promise<Posts[]> {
+  return await prisma.posts.findMany({ where: {} });
 }
 
-export async function insert(data: TPostsInsert) {
-  await prisma.posts.create({ data });
+export async function insert(data: TPostsInsert): Promise<Posts> {
+  return await prisma.posts.create({ data });
 }

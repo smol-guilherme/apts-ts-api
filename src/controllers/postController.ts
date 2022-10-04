@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { getPostsRoutine, insertRoutine } from "../services/postService";
 
 export async function insertController(req: Request, res: Response) {
-  await insertRoutine(req.body);
+  await insertRoutine(req.body, req.params.userId);
   res.status(201).send();
   return;
 }

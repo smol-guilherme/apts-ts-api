@@ -16,7 +16,7 @@ export async function insert(userData: IRegistryBody): Promise<Users> {
   return await prisma.users.create({ data });
 }
 
-export async function findById(id: number): Promise<Users | null> {
+export async function findById(id: string): Promise<Users | null> {
   const response = await prisma.users.findFirst({ where: { id } });
   return response;
 }

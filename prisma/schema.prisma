@@ -8,15 +8,16 @@ generator client {
 }
 
 model Users {
-  id        String      @id @default(uuid())
-  createdAt DateTime    @default(now())
-  email     String      @unique
-  username  String
-  password  String
-  role      Role        @default(USER)
-  posts     Posts[]
-  relations Relations[]
-  Stars     Stars[]
+  id             String      @id @default(uuid())
+  createdAt      DateTime    @default(now())
+  email          String      @unique
+  username       String
+  password       String
+  profilePicture String
+  role           Role        @default(USER)
+  posts          Posts[]
+  relations      Relations[]
+  Stars          Stars[]
 
   @@map("users")
 }

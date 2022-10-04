@@ -15,7 +15,10 @@ import {
 export async function insertRoutine(postData: IPostBody, userId: string) {
   const findUser = await findById(userId);
   if (findUser === null) {
-    throw { type: "not_found_error", message: "" };
+    throw {
+      type: "not_found_error",
+      message: "User does not exist or id is in the wrong format.",
+    };
   }
   let locationFound = await findByCoordinates(postData.location);
   if (locationFound === null) {
@@ -32,6 +35,8 @@ export async function insertRoutine(postData: IPostBody, userId: string) {
     locationId: locationFound.id!,
     authorId: userId,
   };
+  console.log(insertData);
+
   await posts.insert(insertData);
 }
 

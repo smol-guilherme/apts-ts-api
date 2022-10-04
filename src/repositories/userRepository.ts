@@ -1,6 +1,6 @@
 import { Users } from "@prisma/client";
 import { prisma } from "../database/database";
-import { IRegistryBody, TUsersInsert } from "../types/dataTypes";
+import { IRegistryBody } from "../types/dataTypes";
 
 export async function findByEmail(email: string) {
   return await prisma.users.findFirst({
@@ -17,6 +17,5 @@ export async function insert(userData: IRegistryBody): Promise<Users> {
 }
 
 export async function findById(id: string): Promise<Users | null> {
-  const response = await prisma.users.findFirst({ where: { id } });
-  return response;
+  return await prisma.users.findFirst({ where: { id } });
 }

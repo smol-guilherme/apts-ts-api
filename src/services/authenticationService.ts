@@ -1,8 +1,8 @@
 import * as users from "../repositories/userRepository";
-import { IRegistryBody, TUsersInsert } from "../types/dataTypes";
+import { IRegistryBody } from "../types/dataTypes";
 import { passwordAuth, passwordEncrypt } from "../utils/encryptionUtils";
 
-export async function signupRoutine(userData: TUsersInsert) {
+export async function signupRoutine(userData: IRegistryBody) {
   const findUser = await users.findByEmail(userData.email);
 
   if (findUser !== null)

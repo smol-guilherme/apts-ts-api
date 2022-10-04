@@ -5,7 +5,7 @@ export type TUsersInsert = Omit<models.Users, "id">;
 export interface IRegistryBody {
   email: string;
   password: string;
-  userName: string;
+  username: string;
   profilePicture: string;
   repeatPassword?: string;
 }
@@ -22,6 +22,27 @@ export interface IPostBody {
   location: number[];
   locationName: string;
   establishmentType: string;
+}
+
+export interface IPostsResponse {
+  id: string;
+  date: Date;
+  title: string;
+  description: string;
+  author: IAuthorData;
+  location: ILocationData;
+}
+
+interface IAuthorData {
+  authorId: string;
+  username: string;
+}
+
+interface ILocationData {
+  locationName: string;
+  type: string;
+  latitude: number;
+  longitude: number;
 }
 
 export interface IError extends Error {

@@ -1,33 +1,88 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+generator client {
+  provider = "prisma-client-js"
+}
+
 model Users {
-  id             Int        @id @default(autoincrement())
-  email          String     @unique
-  userName       String
-  profilePicture String
-  password       String
-  products       Products[]
+  id        Int         @id @default(autoincrement())
+  createdAt DateTime    @default(now())
+  email     String      @unique
+  username  String
+  password  String
+  role      Role        @default(USER)
+  posts     Posts[]
+  relations Relations[]
+  Stars     Stars[]
 
   @@map("users")
 }
 
-model Products {
-  id          Int    @id @default(autoincrement())
-  productName String
-  pictureUrl  String
-  price       Int
-  User        Users? @relation(fields: [userId], references: [id])
-  userId      Int?
+model Relations {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  follower   Users    @relation(fields: [followerId], references: [id])
+  followerId Int
 
-  @@map("products")
+  @@map("relations")
+}
+
+model Posts {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  title      String   @db.VarChar(255)
+  author     Users    @relation(fields: [authorId], references: [id])
+  authorId   Int
+  location   Places   @relation(fields: [locationId], references: [id])
+  locationId Int
+  stars      Stars[]
+
+  @@map("posts")
+}
+
+model Stars {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  user      Users    @relation(fields: [userId], references: [id])
+  userId    Int
+  post      Posts    @relation(fields: [postId], references: [id])
+  postId    Int
+
+  @@map("stars")
+}
+
+model Places {
+  id           Int            @id @default(autoincrement())
+  createdAt    DateTime       @default(now())
+  posts        Posts[]
+  locationName String
+  tags         Tags[]
+  type         Establishments
+
+  @@map("locations")
+}
+
+model Tags {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  tagName   String
+  place     Places   @relation(fields: [placeId], references: [id])
+  placeId   Int
+
+  @@map("tags")
+}
+
+enum Establishments {
+  RESTAURANT
+  BAR
+}
+
+enum Role {
+  USER
+  STAR
+  ADMIN
 }

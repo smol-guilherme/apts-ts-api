@@ -10,10 +10,10 @@ export interface IRegistryBody {
   repeatPassword?: string;
 }
 
-export type TProductsInsert = Omit<models.Products, "id">;
+export type TPostsInsert = Omit<models.Posts, "id" | "createdAt" | "updatedAt">;
 
-export interface IProductBody {
-  productName: string;
+export interface IPostBody {
+  postName: string;
   pictureUrl: string;
   price: number;
 }

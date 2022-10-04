@@ -1,5 +1,5 @@
 import { Users } from "@prisma/client";
-import { prisma } from "../databases/database";
+import { prisma } from "../database/database";
 import { IRegistryBody, TUsersInsert } from "../types/dataTypes";
 
 export async function findByEmail(email: string) {

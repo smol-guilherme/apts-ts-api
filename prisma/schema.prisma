@@ -8,7 +8,7 @@ generator client {
 }
 
 model Users {
-  id        Int         @id @default(autoincrement())
+  id        String      @id @default(uuid())
   createdAt DateTime    @default(now())
   email     String      @unique
   username  String
@@ -22,44 +22,47 @@ model Users {
 }
 
 model Relations {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(uuid())
   createdAt  DateTime @default(now())
   follower   Users    @relation(fields: [followerId], references: [id])
-  followerId Int
+  followerId String
 
   @@map("relations")
 }
 
 model Posts {
-  id         Int      @id @default(autoincrement())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  title      String   @db.VarChar(255)
-  author     Users    @relation(fields: [authorId], references: [id])
-  authorId   Int
-  location   Places   @relation(fields: [locationId], references: [id])
-  locationId Int
-  stars      Stars[]
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  title       String   @db.VarChar(255)
+  description String
+  author      Users    @relation(fields: [authorId], references: [id])
+  authorId    String
+  location    Places   @relation(fields: [locationId], references: [id])
+  locationId  String
+  stars       Stars[]
 
   @@map("posts")
 }
 
 model Stars {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   user      Users    @relation(fields: [userId], references: [id])
-  userId    Int
+  userId    String
   post      Posts    @relation(fields: [postId], references: [id])
-  postId    Int
+  postId    String
 
   @@map("stars")
 }
 
 model Places {
-  id           Int            @id @default(autoincrement())
+  id           String         @id @default(uuid())
   createdAt    DateTime       @default(now())
   posts        Posts[]
   locationName String
+  latitude     Int
+  longitude    Int
   tags         Tags[]
   type         Establishments
 
@@ -67,11 +70,11 @@ model Places {
 }
 
 model Tags {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   tagName   String
   place     Places   @relation(fields: [placeId], references: [id])
-  placeId   Int
+  placeId   String
 
   @@map("tags")
 }
@@ -79,6 +82,7 @@ model Tags {
 enum Establishments {
   RESTAURANT
   BAR
+  COFFEESHOP
 }
 
 enum Role {

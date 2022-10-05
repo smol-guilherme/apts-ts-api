@@ -63,8 +63,3 @@ export async function findAll(
 export async function insert(data: TPostsInsert): Promise<Posts> {
   return await prisma.posts.create({ data });
 }
-
-export async function upvote(pid: string, uid: string) {
-  const data = { postId: pid, userId: uid };
-  return await prisma.stars.create({ data });
-}

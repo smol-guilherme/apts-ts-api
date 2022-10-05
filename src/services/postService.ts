@@ -1,4 +1,5 @@
 import { Establishments } from "@prisma/client";
+import { findStarred, upvote } from "../repositories/interactionRepository";
 import {
   createLocation,
   findByCoordinates,
@@ -40,9 +41,12 @@ export async function getPostsRoutine(userId: string) {
 
 export async function starPostRoutine(postId: string, userId: string) {
   await findUserByUUID(userId);
-  await posts.findByUUID(postId);
-  await posts.upvote(postId, userId);
-  return;
+  await findPostByUUID(postId);
+  if (findStarred(userId, postId))
+    // const response = ;
+    // console.log(response);
+
+    return await upvote(postId, userId);
 }
 
 async function createNewLocation(data: TPlacesInsert) {

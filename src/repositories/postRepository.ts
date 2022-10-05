@@ -63,3 +63,19 @@ export async function findAll(
 export async function insert(data: TPostsInsert): Promise<Posts> {
   return await prisma.posts.create({ data });
 }
+
+export async function updateStars(pid: string) {
+  const response = await prisma.posts.findFirst({
+    include: {
+      _count: {
+        select: {
+          stars: true,
+        },
+      },
+    },
+    where: {
+      id: pid,
+    },
+  });
+  return response!._count;
+}

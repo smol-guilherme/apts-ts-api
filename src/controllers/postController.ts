@@ -15,8 +15,8 @@ export async function insertController(req: Request, res: Response) {
 export async function reviewController(req: Request, res: Response) {
   const { id: postId } = req.params;
   const { id: userId } = res.locals.id!;
-  await starPostRoutine(postId, userId);
-  res.status(200).send();
+  const { stars } = await starPostRoutine(postId, userId);
+  res.status(200).send({ count: stars });
   return;
 }
 

@@ -34,8 +34,6 @@ export async function insertRoutine(postData: IPostBody, userId: string) {
     locationId: locationFound.id!,
     authorId: userId,
   };
-  console.log(insertData);
-
   await posts.insert(insertData);
 }
 

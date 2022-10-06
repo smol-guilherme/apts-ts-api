@@ -4,6 +4,10 @@ export const idSchema = Joi.object({
   id: Joi.string().uuid().required(),
 });
 
+export const coordinateSchema = Joi.object({
+  coordinates: Joi.array().length(2).required(),
+});
+
 export const signupSchema = Joi.object({
   email: Joi.string().trim().email().required(),
   profilePicture: Joi.string().trim().uri().required(),

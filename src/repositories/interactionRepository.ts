@@ -7,8 +7,6 @@ export async function upvote(pid: string, uid: string) {
 
 export async function findStarred(pid: string, uid: string) {
   const data = { postId: pid, userId: uid };
-  console.log(data);
-
   return await prisma.stars.findUnique({
     where: {
       userId_postId: { ...data },
@@ -23,7 +21,5 @@ export async function downvote(pid: string, uid: string) {
       userId_postId: data,
     },
   });
-  console.log(response);
-
   return response;
 }
